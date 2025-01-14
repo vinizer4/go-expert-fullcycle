@@ -20,10 +20,29 @@ var (
 )
 */
 
+/*
+ID Example of creating a new type
+
+	If you need to make your code more readable, you can create a new type with an underlying type.
+
+	this example creates a new type ID with an underlying type int.
+*/
+type ID int // create a new type ID with underlying type int
+
+var id ID = 42 // create a variable id of type ID
+
 func main() {
+
 	// var x string = "x" in local scope if the var is not used, it will cause an error
 	a := "x" // this is a short variable declaration, := is used only for the first time
-	// a := "y" // this will cause an error because a is already declared, use = instead
+	// a := "y" // this will cause an error because an is already declared, use = instead
 	a = "y" // this is a redeclaration
-	println(a, b)
+
+	println(a)  // "y"
+	println(b)  // false
+	println(c)  // 0
+	println(d)  // ""
+	println(e)  // 0.0
+	println(h)  // "Hello, World!"
+	println(id) // 42
 }
