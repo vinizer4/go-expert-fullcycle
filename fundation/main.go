@@ -1,5 +1,7 @@
 package main
 
+import "fmt"
+
 const h = "Hello, World!"
 
 var (
@@ -45,4 +47,9 @@ func main() {
 	println(e)  // 0.0
 	println(h)  // "Hello, World!"
 	println(id) // 42
+	printType(id)
+}
+
+func printType(param any) {
+	fmt.Printf("O tipo de E é %T", param)
 }
