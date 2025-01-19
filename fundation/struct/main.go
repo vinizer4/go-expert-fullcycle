@@ -33,6 +33,15 @@ type Client struct {
 	Address Address
 }
 
+// this is an example of a method in a struct in GO
+// this method is associated with the Client struct
+// is the same of a method in a class in POO (Programing Oriented Object)
+
+func (client Client) Disable() {
+	client.Active = false
+	fmt.Printf("The client %s is disabled\n", client.Name)
+}
+
 func main() {
 	wesley := Client{
 		Name:   "Wesley",
@@ -47,4 +56,6 @@ func main() {
 
 	fmt.Printf("Name: %s, Age: %d, Active: %t\n", wesley.Name, wesley.Age, wesley.Active)
 	fmt.Printf("Street: %s, Number: %d, City: %s, State: %s\n", wesley.Address.Street, wesley.Address.Number, wesley.Address.City, wesley.Address.State)
+
+	wesley.Disable()
 }
