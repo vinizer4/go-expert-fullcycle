@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"github.com/google/uuid"
 	"go-course/math"
 )
 
@@ -12,4 +13,6 @@ func main() {
 
 	car := math.Car{Brand: "BMW"}
 	fmt.Println(car.Run())
+
+	fmt.Println(uuid.New())
 }
