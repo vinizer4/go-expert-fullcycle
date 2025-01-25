@@ -44,4 +44,9 @@ func main() {
 		}
 		fmt.Print(string(buffer[:n]))
 	}
+
+	err = os.Remove("file.txt")
+	if err != nil {
+		panic(err)
+	}
 }
