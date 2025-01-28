@@ -1,15 +1,33 @@
 package main
 
 import (
+	"encoding/json"
+	"io"
 	"net/http"
 )
 
+type ViaCEP struct {
+	Cep         string `json:"cep"`
+	Logradouro  string `json:"logradouro"`
+	Complemento string `json:"complemento"`
+	Unidade     string `json:"unidade"`
+	Bairro      string `json:"bairro"`
+	Localidade  string `json:"localidade"`
+	Uf          string `json:"uf"`
+	Estado      string `json:"estado"`
+	Regiao      string `json:"regiao"`
+	Ibge        string `json:"ibge"`
+	Gia         string `json:"gia"`
+	Ddd         string `json:"ddd"`
+	Siafi       string `json:"siafi"`
+}
+
 func main() {
-	http.HandleFunc("/busca-cep", BuscaCEP)
+	http.HandleFunc("/busca-cep", FindCEP)
 	http.ListenAndServe(":8080", nil)
 }
 
-func BuscaCEP(writer http.ResponseWriter, request *http.Request) {
+func FindCEP(writer http.ResponseWriter, request *http.Request) {
 	if request.URL.Path != "/busca-cep" {
 		http.Error(writer, "404 not found.", http.StatusNotFound)
 		return
@@ -22,4 +40,22 @@ func BuscaCEP(writer http.ResponseWriter, request *http.Request) {
 	writer.Header().Set("Content-Type", "application/json")
 	writer.WriteHeader(http.StatusOK)
 	writer.Write([]byte("Buscando CEP"))
+}
+
+func findCep(cep string) (*ViaCEP, error) {
+	response, error := http.Get("https://viacep.com.br/ws/" + cep + "/json")
+	if error != nil {
+		return nil, error
+	}
+	defer response.Body.Close()
+	body, error := io.ReadAll(response.Body)
+	if error != nil {
+		return nil, error
+	}
+	var viacep ViaCEP
+	error = json.Unmarshal(body, &viacep)
+	if error != nil {
+		return nil, error
+	}
+	return &viacep, nil
 }
