@@ -23,12 +23,12 @@ type ViaCEP struct {
 }
 
 func main() {
-	http.HandleFunc("/busca-cep", FindCEP)
+	http.HandleFunc("/find-cep", FindCEP)
 	http.ListenAndServe(":8080", nil)
 }
 
 func FindCEP(writer http.ResponseWriter, request *http.Request) {
-	if request.URL.Path != "/busca-cep" {
+	if request.URL.Path != "/find-cep" {
 		http.Error(writer, "404 not found.", http.StatusNotFound)
 		return
 	}
@@ -37,9 +37,18 @@ func FindCEP(writer http.ResponseWriter, request *http.Request) {
 		http.Error(writer, "cep is required", http.StatusBadRequest)
 		return
 	}
+	cep, error := findCep(cepParam)
+	if error != nil {
+		http.Error(writer, error.Error(), http.StatusInternalServerError)
+		return
+	}
 	writer.Header().Set("Content-Type", "application/json")
 	writer.WriteHeader(http.StatusOK)
-	writer.Write([]byte("Buscando CEP"))
+	err := json.NewEncoder(writer).Encode(cep)
+	if err != nil {
+		http.Error(writer, "cep is required", http.StatusBadRequest)
+		return
+	}
 }
 
 func findCep(cep string) (*ViaCEP, error) {
