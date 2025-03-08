@@ -1,16 +1,24 @@
 package main
 
 import (
+	"fmt"
 	_ "github.com/go-sql-driver/mysql"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
 )
 
 type Product struct {
-	ID    int `gorm:"primary_key"`
-	Name  string
-	Price float64
+	ID         int `gorm:"primary_key"`
+	Name       string
+	Price      float64
+	CategoryID int
+	Category   Category
 	gorm.Model
+}
+
+type Category struct {
+	ID   int `gorm:"primary_key"`
+	Name string
 }
 
 func main() {
@@ -19,10 +27,22 @@ func main() {
 	if err != nil {
 		panic("failed to connect database")
 	}
-	db.AutoMigrate(&Product{})
+	db.AutoMigrate(&Product{}, &Category{})
+
+	// create category
+	//category := Category{Name: "Electronics"}
+	//db.Create(&category)
+
+	// create product with category
+	//db.Create(
+	//	&Product{
+	//		Name:       "Macbook",
+	//		Price:      1000,
+	//		CategoryID: category.ID,
+	//	})
 
 	// create
-	db.Create(&Product{Name: "Macbook", Price: 1000})
+	//db.Create(&Product{Name: "Macbook", Price: 1000})
 
 	// create batch
 	//products := []Product{
@@ -75,7 +95,14 @@ func main() {
 	// delete
 	//db.Delete(&p2)
 
-	var product Product
-	db.First(&product, 1)
-	db.Delete(&product)
+	//var product Product
+	//db.First(&product, 1)
+	//db.Delete(&product)
+
+	// select products with categories
+	var products []Product
+	db.Preload("Category").Find(&products)
+	for _, product := range products {
+		fmt.Println(product.Name, product.Category.Name)
+	}
 }
