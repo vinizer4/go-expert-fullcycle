@@ -19,4 +19,15 @@ func main() {
 		panic("failed to connect database")
 	}
 	db.AutoMigrate(&Product{})
+
+	// create
+	db.Create(&Product{Name: "Laptop", Price: 1000})
+
+	// create batch
+	products := []Product{
+		{Name: "Mouse", Price: 10},
+		{Name: "Keyboard", Price: 20},
+		{Name: "Monitor", Price: 200},
+	}
+	db.Create(&products)
 }
