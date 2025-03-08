@@ -38,12 +38,27 @@ func main() {
 	//fmt.Println(product)
 
 	// select with where
-	var product Product
-	db.First(&product, "name = ?", "Mouse")
-	fmt.Println(product)
+	//var product Product
+	//db.First(&product, "name = ?", "Mouse")
+	//fmt.Println(product)
 
 	// select all
+	//var products []Product
+	//db.Find(&products)
+	//fmt.Println(products)
+
+	// select with limit
+	//var products []Product
+	//db.Limit(2).Find(&products)
+	//fmt.Println(products)
+
+	// select with offset to pagination
+	//var products []Product
+	//db.Offset(2).Limit(2).Find(&products)
+	//fmt.Println(products)
+
+	// where
 	var products []Product
-	db.Find(&products)
+	db.Where("price >= ?", 200).Find(&products)
 	fmt.Println(products)
 }
