@@ -18,8 +18,9 @@ type Product struct {
 }
 
 type Category struct {
-	ID   int `gorm:"primary_key"`
-	Name string
+	ID       int `gorm:"primary_key"`
+	Name     string
+	Products []Product
 }
 
 type SerialNumber struct {
@@ -49,7 +50,7 @@ func main() {
 	//	})
 
 	//create serial number
-	db.Create(&SerialNumber{Number: "123456", ProductID: 2})
+	//db.Create(&SerialNumber{Number: "123456", ProductID: 2})
 
 	// create
 	//db.Create(&Product{Name: "Macbook", Price: 1000})
@@ -114,5 +115,18 @@ func main() {
 	db.Preload("Category").Preload("SerialNumber").Find(&products)
 	for _, product := range products {
 		fmt.Println(product.Name, product.Category.Name, product.SerialNumber.Number)
+	}
+
+	var categories []Category
+	err = db.Model(&Category{}).Preload("Products").Find(&categories).Error
+	if err != nil {
+		panic(err)
+	}
+
+	for _, category := range categories {
+		fmt.Println(category.Name)
+		for _, product := range category.Products {
+			fmt.Println(" - ", product.Name, category.Name)
+		}
 	}
 }
