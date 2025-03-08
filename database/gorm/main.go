@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	_ "github.com/go-sql-driver/mysql"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
@@ -21,13 +22,28 @@ func main() {
 	db.AutoMigrate(&Product{})
 
 	// create
-	db.Create(&Product{Name: "Laptop", Price: 1000})
+	//db.Create(&Product{Name: "Laptop", Price: 1000})
 
 	// create batch
-	products := []Product{
-		{Name: "Mouse", Price: 10},
-		{Name: "Keyboard", Price: 20},
-		{Name: "Monitor", Price: 200},
-	}
-	db.Create(&products)
+	//products := []Product{
+	//	{Name: "Mouse", Price: 10},
+	//	{Name: "Keyboard", Price: 20},
+	//	{Name: "Monitor", Price: 200},
+	//}
+	//db.Create(&products)
+
+	// select one
+	//var product Product
+	//db.First(&product, 1)
+	//fmt.Println(product)
+
+	// select with where
+	var product Product
+	db.First(&product, "name = ?", "Mouse")
+	fmt.Println(product)
+
+	// select all
+	var products []Product
+	db.Find(&products)
+	fmt.Println(products)
 }
