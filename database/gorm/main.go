@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	_ "github.com/go-sql-driver/mysql"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
@@ -11,10 +10,11 @@ type Product struct {
 	ID    int `gorm:"primary_key"`
 	Name  string
 	Price float64
+	gorm.Model
 }
 
 func main() {
-	dsn := "root:root@tcp(localhost:3306)/goexpert"
+	dsn := "root:root@tcp(localhost:3306)/goexpert?charset=utf8mb4&parseTime=True&loc=Local"
 	db, err := gorm.Open(mysql.Open(dsn), &gorm.Config{})
 	if err != nil {
 		panic("failed to connect database")
@@ -22,7 +22,7 @@ func main() {
 	db.AutoMigrate(&Product{})
 
 	// create
-	//db.Create(&Product{Name: "Laptop", Price: 1000})
+	db.Create(&Product{Name: "Macbook", Price: 1000})
 
 	// create batch
 	//products := []Product{
@@ -63,15 +63,19 @@ func main() {
 	//fmt.Println(products)
 
 	// update
-	var product Product
-	db.First(&product, 1)
-	product.Name = "Macbook"
-	db.Save(&product)
+	//var product Product
+	//db.First(&product, 1)
+	//product.Name = "Macbook"
+	//db.Save(&product)
 
-	var p2 Product
-	db.First(&p2, 1)
-	fmt.Println(p2)
+	//var p2 Product
+	//db.First(&p2, 1)
+	//fmt.Println(p2)
 
 	// delete
-	db.Delete(&p2)
+	//db.Delete(&p2)
+
+	var product Product
+	db.First(&product, 1)
+	db.Delete(&product)
 }
