@@ -58,7 +58,20 @@ func main() {
 	//fmt.Println(products)
 
 	// where
-	var products []Product
-	db.Where("price >= ?", 200).Find(&products)
-	fmt.Println(products)
+	//var products []Product
+	//db.Where("price >= ?", 200).Find(&products)
+	//fmt.Println(products)
+
+	// update
+	var product Product
+	db.First(&product, 1)
+	product.Name = "Macbook"
+	db.Save(&product)
+
+	var p2 Product
+	db.First(&p2, 1)
+	fmt.Println(p2)
+
+	// delete
+	db.Delete(&p2)
 }
