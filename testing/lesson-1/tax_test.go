@@ -12,3 +12,22 @@ func TestCalculateTax(t *testing.T) {
 		t.Errorf("Expected %f, got %f", expected, result)
 	}
 }
+
+func TestCalculateTaxBatch(t *testing.T) {
+	type calcTax struct {
+		amount, expect float64
+	}
+
+	table := []calcTax{
+		{500, 5.0},
+		{1000, 10.0},
+		{1500, 10.0},
+	}
+
+	for _, item := range table {
+		result := CalculateTax(item.amount)
+		if result != item.expect {
+			t.Errorf("Expected %f, got %f", item.expect, result)
+		}
+	}
+}
