@@ -37,3 +37,19 @@ func BenchmarkCalculateTax(b *testing.B) {
 		CalculateTax(500)
 	}
 }
+
+func FuzzCalculateTax(f *testing.F) {
+	seed := []float64{-1.0, 0.0, 500.0, 1000.0, 1500.0}
+	for _, amount := range seed {
+		f.Add(amount)
+	}
+	f.Fuzz(func(t *testing.T, amount float64) {
+		result := CalculateTax(amount)
+		if amount <= 0 && result != 0 {
+			t.Errorf("Received %f but expected 0", result)
+		}
+		if amount > 20000 && result != 20 {
+			t.Errorf("Received %f but expected 20", result)
+		}
+	})
+}
