@@ -6,7 +6,6 @@ import (
 )
 
 func main() {
-	m := math.Math{A: 10, B: 20}
+	m := math.NewMath(1, 2)
 	fmt.Println(m.Add())
-	fmt.Println("Hello, World!")
 }
