@@ -1,3 +1,3 @@
-module github.com/devfullcycle/goexpert/7-Packaging/1
+module meumodulo
 
 go 1.23.3
