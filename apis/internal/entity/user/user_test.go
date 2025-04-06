@@ -1,4 +1,4 @@
-package entity
+package user
 
 import (
 	"github.com/stretchr/testify/assert"
