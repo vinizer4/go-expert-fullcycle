@@ -1,4 +1,4 @@
-package user
+package entity
 
 import (
 	"github.com/vinizer4/go-expert-fullcycle/apis/pkg/entity"
