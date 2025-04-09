@@ -11,6 +11,9 @@ GET http://localhost:8000/products/8890a679-6a9b-46c5-9fb6-19386c6ca531 HTTP/1.1
 Content-Type: application/json
 
 ###
+GET http://localhost:8000/products HTTP/1.1
+
+###
 PUT http://localhost:8000/products/8890a679-6a9b-46c5-9fb6-19386c6ca531 HTTP/1.1
 Content-Type: application/json
 
