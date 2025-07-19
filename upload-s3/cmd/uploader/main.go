@@ -6,6 +6,7 @@ import (
 	"github.com/aws/aws-sdk-go/aws/credentials"
 	"github.com/aws/aws-sdk-go/aws/session"
 	"github.com/aws/aws-sdk-go/service/s3"
+	"io"
 	"os"
 )
 
@@ -38,6 +39,17 @@ func main() {
 		panic(err)
 	}
 	defer dir.Close()
+	for {
+		files, err := dir.ReadDir(1)
+		if err != nil {
+			if err == io.EOF {
+				break
+			}
+			fmt.Sprintf("Error reading directory: %v\n", err)
+			continue
+		}
+		uploadFile(files[0].Name())
+	}
 }
 
 func uploadFile(fileName string) {
