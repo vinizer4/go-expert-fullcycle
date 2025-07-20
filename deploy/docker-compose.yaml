@@ -1,0 +1,10 @@
+version: '3'
+
+services:
+  goapp:
+    build: ../../../../Downloads/go-expert/goexpert-main/21-deploy-k8s
+    ports:
+      - "8080:8080"
+    volumes:
+      - .:/app
+    
