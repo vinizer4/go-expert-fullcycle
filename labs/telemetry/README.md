@@ -41,7 +41,7 @@ Client → Service A → Service B → External APIs
 
 ```bash
 git clone <repo-url>
-cd go-telemetry
+cd labs/telemetry
 ```
 
 ### 2. Set Environment Variables
