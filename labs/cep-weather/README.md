@@ -1,5 +1,3 @@
-Here is your README translated to English:
-
 # Weather API by ZIP Code
 
 This project is part of the Full Cycle post-graduate program and fulfills the challenge of developing a Go system that receives a ZIP code (CEP), identifies the city, and returns the current weather.
