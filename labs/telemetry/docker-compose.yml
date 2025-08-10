@@ -39,7 +39,7 @@ services:
 
   service-a:
     build:
-      context: ../../../../../Downloads/go-telemetry-main
+      context: .
       dockerfile: Dockerfile.service-a
     ports:
       - "8080:8080"
@@ -53,7 +53,7 @@ services:
 
   service-b:
     build:
-      context: ../../../../../Downloads/go-telemetry-main
+      context: .
       dockerfile: Dockerfile.service-b
     ports:
       - "8081:8081"
