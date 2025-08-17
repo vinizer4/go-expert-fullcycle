@@ -12,7 +12,7 @@ import (
 )
 
 var (
-	Validade = validator.New()
+	validade = validator.New()
 	transl   ut.Translator
 )
 
