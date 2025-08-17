@@ -7,17 +7,17 @@ import (
 	"vinizer4/go-expert-fullcycle/labs/auction/internal/usecase/user_usecase"
 )
 
-type userController struct {
-	userUserCase user_usecase.UserUseCase
+type UserController struct {
+	userUserCase user_usecase.UserUseCaseInterface
 }
 
-func NewUserController(userUserCase user_usecase.UserUseCase) *userController {
-	return &userController{
+func NewUserController(userUserCase user_usecase.UserUseCaseInterface) *UserController {
+	return &UserController{
 		userUserCase: userUserCase,
 	}
 }
 
-func (u *userController) FindUserById(c *gin.Context) {
+func (u *UserController) FindUserById(c *gin.Context) {
 	userId := c.Param("userId")
 
 	if err := uuid.Validate(userId); err != nil {

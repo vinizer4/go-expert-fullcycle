@@ -24,6 +24,16 @@ type BidRepository struct {
 	AuctionRepository *auction.AuctionRepository
 }
 
+func NewBidRepository(
+	dataBase *mongo.Database,
+	auctionRepository *auction.AuctionRepository,
+) *BidRepository {
+	return &BidRepository{
+		Collection:        dataBase.Collection("bids"),
+		AuctionRepository: auctionRepository,
+	}
+}
+
 func (bd *BidRepository) CreateBid(
 	ctx context.Context,
 	bidEntities []bid_entity.Bid) *internal_error.InternalError {

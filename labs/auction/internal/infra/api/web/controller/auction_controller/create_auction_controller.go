@@ -8,17 +8,17 @@ import (
 	"vinizer4/go-expert-fullcycle/labs/auction/internal/usecase/auction_usecase"
 )
 
-type auctionController struct {
-	auctionUseCase auction_usecase.AuctionUseCase
+type AuctionController struct {
+	auctionUseCase auction_usecase.AuctionUseCaseInterface
 }
 
-func NewAuctionController(auctionUseCase auction_usecase.AuctionUseCase) *auctionController {
-	return &auctionController{
+func NewAuctionController(auctionUseCase auction_usecase.AuctionUseCaseInterface) *AuctionController {
+	return &AuctionController{
 		auctionUseCase: auctionUseCase,
 	}
 }
 
-func (u *auctionController) CreateAuction(c *gin.Context) {
+func (u *AuctionController) CreateAuction(c *gin.Context) {
 	var auctionInputDto auction_usecase.AuctionInputDto
 
 	if err := c.ShouldBindJSON(&auctionInputDto); err != nil {

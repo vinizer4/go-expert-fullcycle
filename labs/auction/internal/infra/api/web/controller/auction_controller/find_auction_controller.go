@@ -8,7 +8,7 @@ import (
 	"vinizer4/go-expert-fullcycle/labs/auction/internal/usecase/auction_usecase"
 )
 
-func (u *auctionController) FindAuctionById(c *gin.Context) {
+func (u *AuctionController) FindAuctionById(c *gin.Context) {
 	auctionId := c.Param("auctionId")
 
 	if err := uuid.Validate(auctionId); err != nil {
@@ -31,7 +31,7 @@ func (u *auctionController) FindAuctionById(c *gin.Context) {
 	c.JSON(200, auctionData)
 }
 
-func (u *auctionController) FindAuctions(c *gin.Context) {
+func (u *AuctionController) FindAuctions(c *gin.Context) {
 	status := c.Query("status")
 	category := c.Query("category")
 	productName := c.Query("productName")
@@ -59,7 +59,7 @@ func (u *auctionController) FindAuctions(c *gin.Context) {
 	c.JSON(200, auctions)
 }
 
-func (u *auctionController) FindWinningBidByAuction(c *gin.Context) {
+func (u *AuctionController) FindWinningBidByAuction(c *gin.Context) {
 	auctionId := c.Param("auctionId")
 
 	if err := uuid.Validate(auctionId); err != nil {

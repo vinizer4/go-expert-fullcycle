@@ -10,6 +10,12 @@ import (
 	"vinizer4/go-expert-fullcycle/labs/auction/internal/internal_error"
 )
 
+type BidInputDTO struct {
+	UserId    string  `json:"user_id" binding:"required,uuid"`
+	AuctionId string  `json:"auction_id" binding:"required,uuid"`
+	Amount    float64 `json:"amount" binding:"required,gt=0"`
+}
+
 type BidOutputDTO struct {
 	Id        string    `json:"id"`
 	UserId    string    `json:"user_id"`
@@ -29,7 +35,7 @@ type BidUseCase struct {
 
 var bidBatch []bid_entity.Bid
 
-func newBidUseCase(bidRepository bid_entity.BidEntityRepository) BidUseCaseInterface {
+func NewBidUseCase(bidRepository bid_entity.BidEntityRepository) BidUseCaseInterface {
 	maxSizeInterval := getMaxBatchSizeInterval()
 	maxBatchSize := getMaxBatchSize()
 	bidUseCase := &BidUseCase{
@@ -44,7 +50,7 @@ func newBidUseCase(bidRepository bid_entity.BidEntityRepository) BidUseCaseInter
 }
 
 type BidUseCaseInterface interface {
-	CreateBid(ctx context.Context, bidInputDTO BidOutputDTO) *internal_error.InternalError
+	CreateBid(ctx context.Context, bidInputDTO BidInputDTO) *internal_error.InternalError
 	FindWinningBidByAuctionId(
 		ctx context.Context, auctionId string) (*BidOutputDTO, *internal_error.InternalError)
 	FindBidByAuctionId(
@@ -89,7 +95,7 @@ func (bu *BidUseCase) triggerCreateRoutine(ctx context.Context) {
 
 func (bu *BidUseCase) CreateBid(
 	ctx context.Context,
-	bidInputDTO BidOutputDTO) *internal_error.InternalError {
+	bidInputDTO BidInputDTO) *internal_error.InternalError {
 
 	bidEntity, err := bid_entity.CreateBid(
 		bidInputDTO.UserId,
