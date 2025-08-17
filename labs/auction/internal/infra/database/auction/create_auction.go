@@ -48,7 +48,7 @@ func (ar *AuctionRepository) CreateAuction(
 	_, err := ar.Collection.InsertOne(ctx, auctionEntityMongo)
 	if err != nil {
 		logger.Error("Error trying to create auction", err)
-		return internal_error.NewInternalServerError("Error trying to create auction")
+		return internal_error.NewInternalServerError("Error trying to create auction: " + err.Error())
 	}
 
 	go func() {
