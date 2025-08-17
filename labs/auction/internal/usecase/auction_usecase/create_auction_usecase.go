@@ -10,9 +10,9 @@ import (
 )
 
 type AuctionInputDto struct {
-	ProductName string              `json:"product_name" validate:"required"`
-	Category    string              `json:"category" validate:"required"`
-	Description string              `json:"description" validate:"required"`
+	ProductName string              `json:"product_name" validate:"required" binding:"required,min=1"`
+	Category    string              `json:"category" validate:"required" binding:"required,min=2"`
+	Description string              `json:"description" validate:"required" binding:"required,min=10,max=200"`
 	Condition   ProductionCondition `json:"condition" validate:"required"`
 }
 
