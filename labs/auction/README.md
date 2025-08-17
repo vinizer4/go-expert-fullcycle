@@ -1,5 +1,3 @@
-Here is an English README for your project, following the structure and details of your example:
-
 # Golang Concurrency Challenge - Auction
 
 This repository contains the solution for the **Golang Concurrency Challenge - Auction**, part of the **Go Expert / FullCycle** postgraduate program.
