@@ -4,13 +4,15 @@ import (
 	"context"
 	"time"
 	"vinizer4/go-expert-fullcycle/labs/auction/internal/entity/auction_entity"
+	"vinizer4/go-expert-fullcycle/labs/auction/internal/entity/bid_entity"
 	"vinizer4/go-expert-fullcycle/labs/auction/internal/internal_error"
+	"vinizer4/go-expert-fullcycle/labs/auction/internal/usecase/bid_usecase"
 )
 
 type AuctionInputDto struct {
-	ProductName string              `json:"product_name" validate:"required"`
-	Category    string              `json:"category" validate:"required"`
-	Description string              `json:"description" validate:"required"`
+	ProductName string              `json:"product_name" validate:"required" binding:"required,min=1"`
+	Category    string              `json:"category" validate:"required" binding:"required,min=2"`
+	Description string              `json:"description" validate:"required" binding:"required,min=10,max=200"`
 	Condition   ProductionCondition `json:"condition" validate:"required"`
 }
 
@@ -24,11 +26,42 @@ type AuctionOutputDto struct {
 	Timestamp   time.Time           `json:"timestamp" time_format:"2006-01-02 15:04:05"`
 }
 
+type WinningInfoOutputDto struct {
+	Auction AuctionOutputDto          `json:"auction_id"`
+	Bid     *bid_usecase.BidOutputDTO `json:"bid,omitempty"`
+}
+
 type ProductionCondition int64
 type AuctionStatus int64
 
 type AuctionUseCase struct {
 	auctionRepositoryInterface auction_entity.AuctionRepositoryInterface
+	bidRepositoryInterface     bid_entity.BidEntityRepository
+}
+
+type AuctionUseCaseInterface interface {
+	CreateAuction(ctx context.Context, auctionInputDto AuctionInputDto) *internal_error.InternalError
+	FindAuctionById(ctx context.Context, auctionId string) (*AuctionOutputDto, *internal_error.InternalError)
+	FindAllAuctions(
+		ctx context.Context,
+		status AuctionStatus,
+		category string,
+		productName string,
+	) ([]AuctionOutputDto, *internal_error.InternalError)
+	FindWinningBidByAuctionId(
+		ctx context.Context,
+		auctionId string,
+	) (*WinningInfoOutputDto, *internal_error.InternalError)
+}
+
+func NewAuctionUseCase(
+	auctionRepositoryInterface auction_entity.AuctionRepositoryInterface,
+	bidRepositoryInterface bid_entity.BidEntityRepository,
+) AuctionUseCaseInterface {
+	return &AuctionUseCase{
+		auctionRepositoryInterface: auctionRepositoryInterface,
+		bidRepositoryInterface:     bidRepositoryInterface,
+	}
 }
 
 func (au *AuctionUseCase) CreateAuction(

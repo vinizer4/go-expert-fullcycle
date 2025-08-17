@@ -4,6 +4,7 @@ import (
 	"context"
 	"vinizer4/go-expert-fullcycle/labs/auction/internal/entity/auction_entity"
 	"vinizer4/go-expert-fullcycle/labs/auction/internal/internal_error"
+	"vinizer4/go-expert-fullcycle/labs/auction/internal/usecase/bid_usecase"
 )
 
 func (au *AuctionUseCase) FindAuctionById(
@@ -56,4 +57,45 @@ func (au *AuctionUseCase) FindAllAuctions(
 	}
 
 	return AuctionOutputDtos, nil
+}
+
+func (au *AuctionUseCase) FindWinningBidByAuctionId(
+	ctx context.Context,
+	auctionId string,
+) (*WinningInfoOutputDto, *internal_error.InternalError) {
+	auction, err := au.auctionRepositoryInterface.FindAuctionById(ctx, auctionId)
+	if err != nil {
+		return nil, err
+	}
+
+	auctionOutputDto := AuctionOutputDto{
+		Id:          auction.Id,
+		ProductName: auction.ProductName,
+		Category:    auction.Category,
+		Description: auction.Description,
+		Condition:   ProductionCondition(auction.Condition),
+		Status:      AuctionStatus(auction.Status),
+		Timestamp:   auction.Timestamp,
+	}
+
+	bidWinning, err := au.bidRepositoryInterface.FindWinningBidByAuctionId(ctx, auction.Id)
+	if err != nil {
+		return &WinningInfoOutputDto{
+			Auction: auctionOutputDto,
+			Bid:     nil,
+		}, nil
+	}
+
+	bidOutputDto := &bid_usecase.BidOutputDTO{
+		Id:        bidWinning.Id,
+		UserId:    bidWinning.UserId,
+		AuctionId: bidWinning.AuctionId,
+		Amount:    bidWinning.Amount,
+		Timestamp: bidWinning.Timestamp,
+	}
+
+	return &WinningInfoOutputDto{
+		Auction: auctionOutputDto,
+		Bid:     bidOutputDto,
+	}, nil
 }

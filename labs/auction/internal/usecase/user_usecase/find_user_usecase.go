@@ -20,6 +20,13 @@ type UserUseCaseInterface interface {
 		ctx context.Context, id string) (*UserOutputDto, *internal_error.InternalError)
 }
 
+func NewUserUseCase(
+	userRepository user_entity.UserRepositoryInterface) UserUseCaseInterface {
+	return &UserUseCase{
+		userRepository,
+	}
+}
+
 func (u *UserUseCase) FindUserById(
 	ctx context.Context, id string) (*UserOutputDto, *internal_error.InternalError) {
 

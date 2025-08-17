@@ -1,6 +1,9 @@
 package rest_err
 
-import "net/http"
+import (
+	"net/http"
+	"vinizer4/go-expert-fullcycle/labs/auction/internal/internal_error"
+)
 
 type RestErr struct {
 	Message string   `json:"message"`
@@ -18,12 +21,12 @@ func (r *RestErr) Error() string {
 	return r.Message
 }
 
-func NewBadRequestError(message string) *RestErr {
+func NewBadRequestError(message string, causes ...Causes) *RestErr {
 	return &RestErr{
 		Message: message,
 		Err:     "bad_request",
 		Code:    http.StatusBadRequest,
-		Causes:  nil,
+		Causes:  causes,
 	}
 }
 
@@ -42,5 +45,18 @@ func NewNotFoundError(message string) *RestErr {
 		Err:     "not_found",
 		Code:    http.StatusNotFound,
 		Causes:  nil,
+	}
+}
+
+func ConvertError(internalError *internal_error.InternalError) *RestErr {
+	switch internalError.Err {
+	case "bad_request":
+		return NewBadRequestError(internalError.Error())
+	case "internal_server":
+		return NewInternalServerError(internalError.Error())
+	case "not_found":
+		return NewNotFoundError(internalError.Error())
+	default:
+		return NewInternalServerError("An unexpected error occurred")
 	}
 }
