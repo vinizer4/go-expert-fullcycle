@@ -4,7 +4,9 @@ import (
 	"context"
 	"time"
 	"vinizer4/go-expert-fullcycle/labs/auction/internal/entity/auction_entity"
+	"vinizer4/go-expert-fullcycle/labs/auction/internal/entity/bid_entity"
 	"vinizer4/go-expert-fullcycle/labs/auction/internal/internal_error"
+	"vinizer4/go-expert-fullcycle/labs/auction/internal/usecase/bid_usecase"
 )
 
 type AuctionInputDto struct {
@@ -24,11 +26,17 @@ type AuctionOutputDto struct {
 	Timestamp   time.Time           `json:"timestamp" time_format:"2006-01-02 15:04:05"`
 }
 
+type WinningInfoOutputDto struct {
+	Auction AuctionOutputDto          `json:"auction_id"`
+	Bid     *bid_usecase.BidOutputDTO `json:"bid,omitempty"`
+}
+
 type ProductionCondition int64
 type AuctionStatus int64
 
 type AuctionUseCase struct {
 	auctionRepositoryInterface auction_entity.AuctionRepositoryInterface
+	bidRepositoryInterface     bid_entity.BidEntityRepository
 }
 
 func (au *AuctionUseCase) CreateAuction(
