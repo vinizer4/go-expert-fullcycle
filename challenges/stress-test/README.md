@@ -19,6 +19,22 @@ go run cmd/cli/main.go \
     --concurrency 10
 ```
 
+### Via Docker
+
+To run the project via Docker, follow the steps below:
+
+1. **Build the Docker image:**
+   ```sh
+   docker build -t stress-test .
+   ```
+
+2. **Run the stress test:**
+   ```sh
+   docker run --rm stress-test --url https://google.com.br --requests 100 --concurrency 10
+   ```
+
+Replace the parameters as needed.
+
 ## Tests
 
 To run the unit tests, simply execute the command below.
