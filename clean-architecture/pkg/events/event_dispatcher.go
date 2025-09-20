@@ -2,6 +2,7 @@ package events
 
 import (
 	"errors"
+	"fmt"
 	"sync"
 )
 
@@ -26,6 +27,7 @@ func (ev *EventDispatcher) Dispatch(event EventInterface) error {
 		}
 		wg.Wait()
 	}
+	fmt.Println("Event dispatched")
 	return nil
 }
 
